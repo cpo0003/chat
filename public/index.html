@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="container">
+    <h1>Bienvenido al Chat</h1>
+    <div id="usernamePage">
+      <form id="usernameForm">
+        <label for="username">Ingresa tu nombre de usuario:</label>
+        <input type="text" id="username" required>
+        <button type="submit">Entrar al chat</button>
+      </form>
+    </div>
+
+    <div id="chatPage" style="display: none;">
+      <div id="chat">
+        <ul id="messages"></ul>
+        <form id="messageForm">
+          <input id="messageInput" autocomplete="off" /><button>Enviar Mensaje Publico</button>
+        </form>
+        <form id="privateMessageForm">
+          <input id="privateMessageInput" autocomplete="off" placeholder="Destinatario"/><input id="privateMessage" autocomplete="off" placeholder="Mensaje"/><button>Enviar Mensaje Privado</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    $(document).ready(() => {
+      const socket = io();
+
+      let username = '';
+
+      $('#usernameForm').submit((e) => {
+        e.preventDefault();
+        username = $('#username').val();
+        if (username) {
+          $('#usernamePage').hide();
+          $('#chatPage').show();
+          $('#chat h1').text(`Bienvenido al Chat, ${username}!`);
+          socket.emit('username', username);
+        }
+      });
+
+      $('#messageForm').submit((e) => {
+        e.preventDefault();
+        const message = $('#messageInput').val();
+        if (message) {
+          socket.emit('chat message', `${username}: ${message}`);
+          $('#messageInput').val('');
+        }
+      });
+
+      $('#privateMessageForm').submit((e) => {
+        e.preventDefault();
+        const targetUsername = $('#privateMessageInput').val();
+        const privateMessage = $('#privateMessage').val();
+        if (targetUsername && privateMessage) {
+          socket.emit('private message', {
+            targetUsername,
+            msg: `${username} por mensaje privado: ${privateMessage}`,
+          });
+          $('#privateMessageInput').val('');
+          $('#privateMessage').val('');
+        }
+      });
+
+      socket.on('chat message', (msg) => {
+        $('#messages').append($('<li>').text(msg));
+      });
+
+      socket.on('private message', (data) => {
+        $('#messages').append($('<li style="color: red;">').text(data.msg));
+      });
+    });
+  </script>
+</body>
+</html>

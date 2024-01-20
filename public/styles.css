@@ -1,0 +1,88 @@
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+
+#container {
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+h1 {
+  color: #333;
+  background-color: #4CAF50;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.5em;
+  border-bottom: 2px solid #ddd;
+}
+
+#usernamePage,
+#chatPage {
+  padding: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#chat {
+  overflow-y: scroll;
+  max-height: 300px;
+  border-bottom: 2px solid #ddd;
+}
+
+#messages li {
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+#privateMessageForm {
+  margin-top: 15px;
+}
+
+#privateMessageInput,
+#privateMessage {
+  width: calc(50% - 5px);
+  display: inline-block;
+  box-sizing: border-box;
+  margin-right: 5px;
+}
+
+/* Media Query para dispositivos con un ancho máximo de 768px (típicamente tablets y móviles) */
+@media only screen and (max-width: 768px) {
+  #container {
+    max-width: 100%;
+    border-radius: 0;
+  }
+}
